@@ -50,7 +50,7 @@ server {
 
         index index.php;
 
-        server_name _ ;
+        server_name localhost ;
 
 	location = /favicon.ico { log_not_found off; access_log off; }
 	location = /robots.txt { log_not_found off; access_log off; allow all; }
