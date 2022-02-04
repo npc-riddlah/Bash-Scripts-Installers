@@ -19,9 +19,9 @@ db_wp_password=\'$db_wp_password\'
 db_wp_host='localhost'
 
 mysql << EOF
-CREATE DATABASE $db_wp_name;
-CREATE USER $db_wp_username@$db_wp_host IDENTIFIED BY $db_wp_password;
-GRANT ALL PRIVILEGES ON $db_wp_name.* to $db_wp_username@$db_wp_host;
+CREATE DATABASE ${db_wp_name};
+CREATE USER ${db_wp_username}@${db_wp_host} IDENTIFIED BY ${db_wp_password};
+GRANT ALL PRIVILEGES ON ${db_wp_name}.* to ${db_wp_username}@$db_wp_host;
 FLUSH PRIVILEGES;
 EOF
 
@@ -35,7 +35,8 @@ openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 touch /etc/apache2/sites-available/wordpress.conf
 touch /etc/apache2/conf-available/ssl-params.conf
 
-echo "<VirtualHost *:80>
+cat << EOF > /etc/apache2/sites-available/wordpress.conf
+<VirtualHost *:80>
     DocumentRoot /var/www/wordpress
     <Directory /var/www/wordpress>
         Options FollowSymLinks
@@ -64,20 +65,21 @@ echo "<VirtualHost *:80>
         Require all granted
     </Directory>
 </VirtualHost>
-" > /etc/apache2/sites-available/wordpress.conf
+EOF
 
-echo "SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+cat << EOF > /etc/apache2/conf-available/ssl-params.conf
+SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
 SSLProtocol All -SSLv2 -SSLv3
 SSLHonorCipherOrder On
-Header always set Strict-Transport-Security \"max-age=63072000; includeSubdomains\"
+Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains"
 Header always set X-Frame-Options DENY
 Header always set X-Content-Type-Options nosniff
 SSLCompression off
 SSLSessionTickets Off
 SSLUseStapling on
-SSLStaplingCache \"shmcb:logs/stapling-cache(150000)\"
-SSLOpenSSLConfCmd DHParameters \"/etc/ssl/certs/dhparam.pem\"
-" > /etc/apache2/conf-available/ssl-params.conf
+SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
+SSLOpenSSLConfCmd DHParameters "/etc/ssl/certs/dhparam.pem"
+EOF
 
 a2enmod rewrite
 sudo a2dissite 000-default
@@ -91,11 +93,11 @@ wget -O /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz
 tar -xzvf /tmp/wordpress.tar.gz -C /var/www
 chown -R www-data.www-data /var/www/wordpress
 
-echo "
+cat << EOF > /var/www/wordpress/wp-config.php
 <?php
-define( 'DB_NAME', '"$db_wp_name"' );
-define( 'DB_USER', "$db_wp_username" );
-define( 'DB_PASSWORD', "$db_wp_password" );
+define( 'DB_NAME', '${db_wp_name}' );
+define( 'DB_USER', ${db_wp_username} );
+define( 'DB_PASSWORD', ${db_wp_password} );
 define( 'DB_HOST', 'localhost' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
@@ -104,4 +106,4 @@ if ( ! defined( 'ABSPATH' ) ) {
         define( 'ABSPATH', __DIR__ . '/' );
 }
 require_once ABSPATH . 'wp-settings.php';
-" > /var/www/wordpress/wp-config.php
+EOF
