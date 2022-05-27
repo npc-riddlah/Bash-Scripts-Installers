@@ -1,0 +1,10 @@
+Collection of simple scripts to automate configuration of your working environment.
+
+Init_django_project_postgres.sh:
+Can create and init virtual django envs, projects, nginx proxy configs.
+
+Install_web_lamp/lemp.sh:
+Scripts for automated install of web frameworks such as wordpress, laravel and etc.
+
+L2tp_*:
+Fast configure L2TP server on ubuntu
