@@ -91,7 +91,7 @@ server {
     location ~ \.php$ {
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        fastcgi_pass unix:/run/php/php8.1-fpm.sock;
         try_files \$uri =404;
     }
 
@@ -192,7 +192,7 @@ server {
 
         location ~ .php$ {
                 include snippets/fastcgi-php.conf;
-                fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
         }
 }
 EOF
@@ -284,7 +284,7 @@ server {
     error_page 404 /index.php;
 
     location ~ \.php$ {
-        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        fastcgi_pass unix:/run/php/php8.1-fpm.sock;
         fastcgi_param SCRIPT_FILENAME \$realpath_root\$fastcgi_script_name;
         include fastcgi_params;
     }
@@ -352,7 +352,7 @@ server {
     location ~ \.php$ {
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        fastcgi_pass unix:/run/php/php8.1-fpm.sock;
         try_files \$uri =404;
     }
 
@@ -422,7 +422,7 @@ cat << EOF > /etc/nginx/sites-available/yii2adv.conf
         location ~ \.php$ {
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+            fastcgi_pass unix:/run/php/php8.1-fpm.sock;
             try_files \$uri =404;
         }
 
@@ -464,7 +464,7 @@ cat << EOF > /etc/nginx/sites-available/yii2adv.conf
         location ~ \.php$ {
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+            fastcgi_pass unix:/run/php/php8.1-fpm.sock;
             try_files \$uri =404;
         }
 
